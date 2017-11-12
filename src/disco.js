@@ -20,6 +20,7 @@ import polyLoader from './lib/polyLoader';
 let pl = new polyLoader;
 let bill, scene, camera, renderer, modelsArr;
 let spots = [];
+let c = 0;
 
 function init() {
 
@@ -34,7 +35,7 @@ function init() {
     let amblight = new AmbientLight( 0x444444 );
     scene.add( amblight );
 
-    var light = new SpotLight( 0xff4444, 1, 250, Math.PI/16, 0.05 );
+    var light = new SpotLight( 0x882222, 1, 0, Math.PI/16, 0.05 );
     light.position.set( 50, 100, -50 );
     light.castShadow = true;
     light.shadow.mapSize.width = 1024;
@@ -42,11 +43,14 @@ function init() {
     light.shadow.camera.near = 500;
     light.shadow.camera.far = 4000;
     light.shadow.camera.fov = 30;
-    scene.add(light);    
+    scene.add(light);
+    light.target.position.set(5,0,-5);
+    scene.add(light.target);
+    light.motion = { x: 1, y: 1 }
     spots.push(light);
 
 
-    var light = new SpotLight( 0x44ff44, 1, 250, Math.PI/16, 0.05 );
+    var light = new SpotLight( 0x228822, 1, 0, Math.PI/16, 0.05 );
     light.position.set( -50, 100, -50 );
     light.castShadow = true;
     light.shadow.mapSize.width = 1024;
@@ -54,11 +58,14 @@ function init() {
     light.shadow.camera.near = 500;
     light.shadow.camera.far = 4000;
     light.shadow.camera.fov = 30;
-    scene.add(light);    
+    scene.add(light);
+    light.target.position.set(-5,0,-5);
+    scene.add(light.target);
+    light.motion = { x: -1, y: 1 }
     spots.push(light);
 
 
-    var light = new SpotLight( 0x4444ff, 1, 250, Math.PI/16, 0.05 );
+    var light = new SpotLight( 0x222288, 1, 0, Math.PI/16, 0.05 );
     light.position.set( 50, 100, 50 );
     light.castShadow = true;
     light.shadow.mapSize.width = 1024;
@@ -66,7 +73,10 @@ function init() {
     light.shadow.camera.near = 500;
     light.shadow.camera.far = 4000;
     light.shadow.camera.fov = 30;
-    scene.add(light);    
+    scene.add(light);
+    light.target.position.set(0,0,5);
+    scene.add(light.target);
+    light.motion = { x: 1, y: -1 }
     spots.push(light);
 
 
@@ -75,7 +85,7 @@ function init() {
     camera.position.x = 0;
     camera.position.y = 50;
     camera.position.z = 50;
-    camera.lookAt(new Vector3(0,5,0));
+    camera.lookAt(new Vector3(0,0,0));
 
     renderer = new WebGLRenderer({ alpha: false, antialias: true });
     renderer.setClearColor( 0x000000, 0);
@@ -90,7 +100,13 @@ function init() {
 }
 
 function animate() {
+    c += 1;
     modelsArr.bill.rotation.y += 0.01;
+    modelsArr.bill.position.y += Math.sin(c/100) * 0.1;
+    spots.forEach((spot,i) => {
+        spot.target.position.x += Math.sin(c/100) * 0.25 * spot.motion.x;
+        spot.target.position.z += Math.cos(c/100) * 0.25 *  spot.motion.y;
+    });
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
 }
