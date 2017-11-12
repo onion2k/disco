@@ -101,11 +101,11 @@ function init() {
 
 function animate() {
     c += 1;
-    modelsArr.bill.rotation.y += 0.01;
-    modelsArr.bill.position.y += Math.sin(c/100) * 0.1;
+    modelsArr.bill.rotation.y += 0.1;
+    modelsArr.bill.position.y = Math.abs(Math.sin(c/10)) * 5;
     spots.forEach((spot,i) => {
-        spot.target.position.x += Math.sin(c/100) * 0.25 * spot.motion.x;
-        spot.target.position.z += Math.cos(c/100) * 0.25 *  spot.motion.y;
+        spot.target.position.x += Math.sin(c/100) * 0.05 * spot.motion.x;
+        spot.target.position.z += Math.cos(c/100) * 0.05 *  spot.motion.y;
     });
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
