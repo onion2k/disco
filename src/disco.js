@@ -1,3 +1,4 @@
+import {TweenMax, Power2, TimelineMax} from "gsap";
 
 import { DefaultLoadingManager } from '../node_modules/three/src/loaders/LoadingManager'; 
 
@@ -35,7 +36,7 @@ function init() {
     let amblight = new AmbientLight( 0x444444 );
     scene.add( amblight );
 
-    var light = new SpotLight( 0x882222, 1, 0, Math.PI/16, 0.05 );
+    var light = new SpotLight( 0xff4444, 0.75, 0, Math.PI/16, 0.05 );
     light.position.set( 50, 100, -50 );
     light.castShadow = true;
     light.shadow.mapSize.width = 1024;
@@ -50,7 +51,7 @@ function init() {
     spots.push(light);
 
 
-    var light = new SpotLight( 0x228822, 1, 0, Math.PI/16, 0.05 );
+    var light = new SpotLight( 0x44ff44, 0.75, 0, Math.PI/16, 0.05 );
     light.position.set( -50, 100, -50 );
     light.castShadow = true;
     light.shadow.mapSize.width = 1024;
@@ -65,7 +66,7 @@ function init() {
     spots.push(light);
 
 
-    var light = new SpotLight( 0x222288, 1, 0, Math.PI/16, 0.05 );
+    var light = new SpotLight( 0x4444ff, 0.75, 0, Math.PI/16, 0.05 );
     light.position.set( 50, 100, 50 );
     light.castShadow = true;
     light.shadow.mapSize.width = 1024;
@@ -81,11 +82,11 @@ function init() {
 
 
 
-    camera = new PerspectiveCamera( 60, 800/600, 1, 5000 );
+    camera = new PerspectiveCamera( 30, 800/600, 1, 5000 );
     camera.position.x = 0;
-    camera.position.y = 50;
-    camera.position.z = 50;
-    camera.lookAt(new Vector3(0,0,0));
+    camera.position.y = 30;
+    camera.position.z = 30;
+    camera.lookAt(new Vector3(0,5,0));
 
     renderer = new WebGLRenderer({ alpha: false, antialias: true });
     renderer.setClearColor( 0x000000, 0);
@@ -101,18 +102,17 @@ function init() {
 
 function animate() {
     c += 1;
-    modelsArr.bill.rotation.y += 0.1;
-    modelsArr.bill.position.y = Math.abs(Math.sin(c/10)) * 5;
     spots.forEach((spot,i) => {
-        spot.target.position.x += Math.sin(c/100) * 0.05 * spot.motion.x;
-        spot.target.position.z += Math.cos(c/100) * 0.05 *  spot.motion.y;
+        spot.target.position.x += Math.sin(c/100) * 0.1 * spot.motion.x;
+        spot.target.position.z += Math.cos(c/100) * 0.1 *  spot.motion.y;
     });
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
 }
 
 const models = [
-    { id: 'bill', path: 'duck/', model: 'RubberDuck.obj', material: 'RubberDuck.mtl', scale: 1, rotation: {x:0, y:0, z:0} }
+    { id: 'bill', path: 'duck/', model: 'RubberDuck.obj', material: 'RubberDuck.mtl', scale: 1, rotation: {x:0, y:0, z:0} },
+    { id: 'bob', path: 'duck/', model: 'RubberDuck.obj', material: 'RubberDuck2.mtl', scale: 1, rotation: {x:0, y:0, z:0} }
 ]
 
 pl.load(models).then((result) => {
@@ -123,6 +123,20 @@ pl.load(models).then((result) => {
     init();
     animate();
 
-    scene.add(modelsArr.bill);
+    modelsArr.bill.position.x -= 5;
+    modelsArr.bob.position.x += 5;
 
+    scene.add(modelsArr.bill);
+    scene.add(modelsArr.bob);
+
+    let t1 = new TimelineMax({ repeat: -1 });
+    t1.add(TweenLite.to(modelsArr.bill.rotation, 1, { y: Math.PI*2 }));
+    t1.add(TweenLite.to(modelsArr.bill.position, 0.5, { y: 5, ease: Power2.easeOut }));
+    t1.add(TweenLite.to(modelsArr.bill.position, 0.5, { y: 0, ease: Power2.easeIn }));
+
+    let t2 = new TimelineMax({ repeat: -1 });
+    t2.add(TweenLite.to(modelsArr.bob.rotation, 1, { y: Math.PI * -2 }));
+    t2.add(TweenLite.to(modelsArr.bob.position, 0.5, { y: 5, ease: Power2.easeOut }));
+    t2.add(TweenLite.to(modelsArr.bob.position, 0.5, { y: 0, ease: Power2.easeIn }));
+    
 });
