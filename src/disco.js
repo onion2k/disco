@@ -1,3 +1,5 @@
+require('./disco.css');
+
 import {TweenMax, Power2, TimelineMax} from "gsap";
 
 import { DefaultLoadingManager } from '../node_modules/three/src/loaders/LoadingManager'; 
@@ -33,8 +35,8 @@ function init() {
     plane.rotation.set(-Math.PI/2, 0, 0);
     scene.add( plane );
     
-    let amblight = new AmbientLight( 0xaaaaaa );
-    scene.add( amblight );
+    // let amblight = new AmbientLight( 0xaaaaaa );
+    // scene.add( amblight );
 
     var light = new SpotLight( 0xff4444, 0.75, 0, Math.PI/16, 0.05 );
     light.position.set( 50, 100, -50 );
