@@ -6,6 +6,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const SriPlugin = require ('webpack-subresource-integrity');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+const extractSass = new ExtractTextPlugin({
+    filename: "disco.[contenthash].css",
+    disable: process.env.NODE_ENV === "development"
+});
+
 const config = {
     entry: {
         app: ["./src/disco.js"]
@@ -32,6 +37,17 @@ const config = {
                     fallback: "style-loader",
                     use: "css-loader"
                 })
+            },
+            {
+                test: /\.scss$/,
+                use: extractSass.extract({
+                    use: [{
+                        loader: "css-loader"
+                    }, {
+                        loader: "sass-loader"
+                    }],
+                    fallback: "style-loader"
+                })
             }
         ]
     },
@@ -42,7 +58,8 @@ const config = {
         ]),
         new UglifyJSPlugin(),
         new HtmlWebpackPlugin({ template: 'assets/index.html' }),
-        new ExtractTextPlugin("disco.css"),
+        //new ExtractTextPlugin("disco.css"),
+        extractSass
     ]
 };
 

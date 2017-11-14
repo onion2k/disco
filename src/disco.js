@@ -1,4 +1,4 @@
-require('./disco.css');
+require('./disco.scss');
 
 import {TweenMax, Power2, TimelineMax} from "gsap";
 
