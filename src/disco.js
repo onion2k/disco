@@ -31,8 +31,8 @@ function init() {
 
     scene = new Scene();
 
-    const planeGeo = new PlaneGeometry(100, 100);
-    const planeMat = new MeshPhongMaterial({ color: 0xffffff });
+    const planeGeo = new PlaneGeometry(70, 70);
+    const planeMat = new MeshPhongMaterial({ color: 0xbbbbbb });
     const plane = new Mesh(planeGeo, planeMat);
     plane.rotation.set(-Math.PI/2, 0, 0);
     scene.add( plane );
@@ -84,9 +84,9 @@ function init() {
     spots.push(light);
 
     let tiles = [];
-    let tileGeo = new BoxGeometry(12,12,1);
-    let mat1 = new MeshPhongMaterial({ color: { r: 1, g: 1, b: 1 }, emissiveIntensity: 0 });
-    let mat2 = new MeshPhongMaterial({ color: { r: 1, g: 1, b: 1 }, emissiveIntensity: 0 });
+    let tileGeo = new BoxGeometry(7,7,1);
+    let mat1 = new MeshPhongMaterial({ color: { r: 0, g: 1, b: 1 }, emissiveIntensity: 0 });
+    let mat2 = new MeshPhongMaterial({ color: { r: 1, g: 0, b: 0 }, emissiveIntensity: 0 });
     let tile = new Mesh(tileGeo, mat1);
     tile.rotation.set(Math.PI/2,0,0)
 
@@ -94,7 +94,7 @@ function init() {
 
         tiles.push(tile.clone());
         tiles[x].material = ((Math.floor(x/8)+x)%2===0) ? mat1 : mat2;
-        tiles[x].position.set( ((x%8)*12.5)-43.75, 0.5, (Math.floor(x/8)*12.5)-43.75 );
+        tiles[x].position.set( ((x%8)*7.5)-26.25, 0.5, (Math.floor(x/8)*7.5)-26.25 );
         scene.add(tiles[x]);
 
     }
@@ -102,19 +102,24 @@ function init() {
     let ttl = new TimelineMax({ repeat: -1 });
     ttl.add(TweenLite.to(mat1.color, 1, { r: 0, g: 1, b: 0, delay: 2 } ));
     ttl.add(TweenLite.to(mat1.color, 1, { r: 0, g: 0, b: 1, delay: 2 } ));
-    ttl.add(TweenLite.to(mat1.color, 1, { r: 1, g: 0, b: 0, delay: 2 } ));
-    ttl.add(TweenLite.to(mat1.color, 1, { r: 1, g: 1, b: 1, delay: 2 } ));
-    ttl.add(TweenLite.to(mat2.color, 1, { r: 0, g: 1, b: 0, delay: 2 } ));
-    ttl.add(TweenLite.to(mat2.color, 1, { r: 0, g: 0, b: 1, delay: 2 } ));
+    ttl.add(TweenLite.to(mat1.color, 1, { r: 1, g: 0, b: 0, delay: 0.25 } ));
+    ttl.add(TweenLite.to(mat1.color, 1, { r: 1, g: 1, b: 1, delay: 0.25 } ));
+    ttl.add(TweenLite.to(mat2.color, 1, { r: 0, g: 1, b: 0, delay: 0.25 } ));
+    ttl.add(TweenLite.to(mat2.color, 1, { r: 0, g: 0, b: 1, delay: 0.25 } ));
     ttl.add(TweenLite.to(mat2.color, 1, { r: 1, g: 0, b: 0, delay: 2 } ));
     ttl.add(TweenLite.to(mat2.color, 1, { r: 1, g: 1, b: 1, delay: 2 } ));
     
 
     camera = new PerspectiveCamera( 60, 800/600, 1, 5000 );
-    camera.position.x = 0;
-    camera.position.y = 30;
-    camera.position.z = 30;
-    camera.lookAt(new Vector3(0,5,0));
+    camera.position.x = -30;
+    camera.position.y = 20;
+    camera.position.z = 20;
+    let camTarget = new Vector3(0,5,0);
+    camera.lookAt(camTarget);
+
+    let cpos = new TimelineMax({ repeat: -1, yoyo: true });
+    cpos.add(TweenLite.to(camera.position, 10, { x: 30, ease: Power0.easeNone, onUpdate: () => { camera.lookAt(camTarget); } } ));
+
 
     renderer = new WebGLRenderer({ alpha: false, antialias: true });
     renderer.setClearColor( 0x000000, 0);
@@ -134,6 +139,7 @@ function animate() {
         spot.target.position.x += Math.sin(c/100) * 0.1 * spot.motion.x;
         spot.target.position.z += Math.cos(c/100) * 0.1 *  spot.motion.y;
     });
+
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
 }
