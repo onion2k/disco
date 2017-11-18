@@ -144,6 +144,35 @@ function animate() {
     requestAnimationFrame( animate );
 }
 
+function initDuck(hat, x, z, hatVec) {
+    
+    let duck = modelsArr.duck.clone();
+    duck.position.x += x;
+    duck.position.z += z;
+    scene.add(duck);
+    
+    let _hat = hat.clone();
+    duck.add(_hat);
+    _hat.position.set(hatVec.x, hatVec.y, hatVec.z);
+
+    return duck;
+
+}
+    
+function dance(model, turn, direction){
+
+    let t = new TimelineMax({ repeat: -1 });
+    t.add(TweenLite.to(model.rotation, 1, { y:   "+="+(Math.PI * 2 * turn) }));
+    t.add(TweenLite.to(model.position, 0.5, { x: "+="+(2.5*direction), ease: Power2.easeIn }));
+    t.add(TweenLite.to(model.position, 0.5, { y: 5, ease: Power2.easeOut }));
+    t.add(TweenLite.to(model.position, 0.5, { y: 0, ease: Power2.easeIn }));
+    t.add(TweenLite.to(model.position, 0.5, { z: "+="+(15*direction), ease: Power2.easeIn }));
+    t.add(TweenLite.to(model.rotation, 1, { y:   "+="+Math.PI * 2 * turn }));
+    t.add(TweenLite.to(model.position, 0.5, { z: "+="+(15*direction*-1), ease: Power2.easeIn }));
+    t.add(TweenLite.to(model.position, 0.5, { x: "+="+(2.5*direction*-1), ease: Power2.easeIn }));
+
+}
+
 const models = [
     { id: 'duck', path: 'duck/', model: 'RubberDuck.obj', material: 'RubberDuck.mtl', scale: 1, rotation: {x:0, y:0, z:0} },
     { id: 'duck2', path: 'duck/', model: 'RubberDuck.obj', material: 'RubberDuck2.mtl', scale: 1, rotation: {x:0, y:0, z:0} },
@@ -157,7 +186,10 @@ const models = [
     { id: 'shades', path: 'hats/shades/', model: 'model.obj', material: 'materials.mtl', scale: 3, rotation: {x:-Math.PI/16, y:Math.PI, z:0} }
 ]
 
-pl.load(models).then((result) => {
+let progress = document.getElementById('progress');
+pl.load(models, progress).then((result) => {
+
+    document.body.removeChild(progress);
 
     modelsArr = {};
     result.map((r) => { modelsArr[r.id] = r.object; });
@@ -165,176 +197,29 @@ pl.load(models).then((result) => {
     init();
     animate();
 
+    let barry = initDuck(modelsArr.top, -15, 0, { x:0, y:6.1, z:1.25 });
+                dance(barry, 1, -1);
 
-    let barry = modelsArr.duck.clone();
-    barry.position.x -= 15;    
-    scene.add(barry);
-    
-    let th = modelsArr.top.clone();
-    barry.add(th);
-    th.position.set(0,6.1,1.25);
+    let bill = initDuck(modelsArr.wizard, -5, 0, { x:0, y:4.45, z:1.25 });
+                dance(bill, -1, -1);
 
-    let t3 = new TimelineMax({ repeat: -1 });
-    t3.add(TweenLite.to(barry.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t3.add(TweenLite.to(barry.position, 0.5, { x: "+=2.5", ease: Power2.easeIn }));
-    t3.add(TweenLite.to(barry.position, 0.5, { y: 5, ease: Power2.easeOut }));
-    t3.add(TweenLite.to(barry.position, 0.5, { y: 0, ease: Power2.easeIn }));
-    t3.add(TweenLite.to(barry.position, 0.5, { z: "-=15", ease: Power2.easeIn }));
-    t3.add(TweenLite.to(barry.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t3.add(TweenLite.to(barry.position, 0.5, { z: "+=15", ease: Power2.easeIn }));
-    t3.add(TweenLite.to(barry.position, 0.5, { x: "-=2.5", ease: Power2.easeIn }));
-    
+    let bob = initDuck(modelsArr.pirate, 5, 0, { x:0, y:4.9, z:1.25 });
+                dance(bob, 1, -1);
+
+    let benny = initDuck(modelsArr.sheriff, 15, 0, { x:0, y:5.2, z:1.25 });
+                dance(benny, -1, -1);
 
 
-    let bill = modelsArr.duck.clone();
-    bill.position.x -= 5;
-    scene.add(bill);
+    let ted = initDuck(modelsArr.baseball, -15, -15, { x:0.45, y:5.25, z:1.75 });
+                dance(ted, 1, 1);
 
-    let wz = modelsArr.wizard.clone();
-    bill.add(wz);
-    wz.position.set(0,4.45,1.25);
+    let terry = initDuck(modelsArr.football, -5, -15, { x:0, y:4.75, z:1.5 });
+                dance(terry, -1, 1);
 
-    let t1 = new TimelineMax({ repeat: -1 });
-    t1.add(TweenLite.to(bill.rotation, 1, { y: "+="+Math.PI * -2 }));
-    t1.add(TweenLite.to(bill.position, 0.5, { x: "+=2.5", ease: Power2.easeIn }));
-    t1.add(TweenLite.to(bill.position, 0.5, { y: 5, ease: Power2.easeOut }));
-    t1.add(TweenLite.to(bill.position, 0.5, { y: 0, ease: Power2.easeIn }));
-    t1.add(TweenLite.to(bill.position, 0.5, { z: "-=15", ease: Power2.easeIn }));
-    t1.add(TweenLite.to(bill.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t1.add(TweenLite.to(bill.position, 0.5, { z: "+=15", ease: Power2.easeIn }));
-    t1.add(TweenLite.to(bill.position, 0.5, { x: "-=2.5", ease: Power2.easeIn }));
+    let tom = initDuck(modelsArr.mortar, 5, -15, { x:0, y:5.35, z:1.25 });
+                dance(tom, 1, 1);
 
-
-
-    let bob = modelsArr.duck.clone();
-    bob.position.x += 5;
-    scene.add(bob);
-
-    let ph = modelsArr.pirate.clone();
-    bob.add(ph);
-    ph.position.set(0,4.9,1.25);
-
-    let t2 = new TimelineMax({ repeat: -1 });
-    t2.add(TweenLite.to(bob.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t2.add(TweenLite.to(bob.position, 0.5, { x: "+=2.5", ease: Power2.easeIn }));
-    t2.add(TweenLite.to(bob.position, 0.5, { y: 5, ease: Power2.easeOut }));
-    t2.add(TweenLite.to(bob.position, 0.5, { y: 0, ease: Power2.easeIn }));
-    t2.add(TweenLite.to(bob.position, 0.5, { z: "-=15", ease: Power2.easeIn }));
-    t2.add(TweenLite.to(bob.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t2.add(TweenLite.to(bob.position, 0.5, { z: "+=15", ease: Power2.easeIn }));
-    t2.add(TweenLite.to(bob.position, 0.5, { x: "-=2.5", ease: Power2.easeIn }));
-
-
-
-
-    let benny = modelsArr.duck.clone();
-    benny.position.x += 15;    
-    scene.add(benny);
-    
-    let sh = modelsArr.sheriff.clone();
-    benny.add(sh);
-    sh.position.set(0,5.2,1.25);
-
-    let t4 = new TimelineMax({ repeat: -1 });
-    t4.add(TweenLite.to(benny.rotation, 1, { y: "+="+Math.PI * -2 }));
-    t4.add(TweenLite.to(benny.position, 0.5, { x: "+=2.5", ease: Power2.easeIn }));
-    t4.add(TweenLite.to(benny.position, 0.5, { y: 5, ease: Power2.easeOut }));
-    t4.add(TweenLite.to(benny.position, 0.5, { y: 0, ease: Power2.easeIn }));
-    t4.add(TweenLite.to(benny.position, 0.5, { z: "-=15", ease: Power2.easeIn }));
-    t4.add(TweenLite.to(benny.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t4.add(TweenLite.to(benny.position, 0.5, { z: "+=15", ease: Power2.easeIn }));
-    t4.add(TweenLite.to(benny.position, 0.5, { x: "-=2.5", ease: Power2.easeIn }));
-
-
-
-
-
-
-
-
-    let ted = modelsArr.duck.clone();
-    ted.position.x -= 15;
-    ted.position.z -= 15;
-    scene.add(ted);
-    
-    let baseball = modelsArr.baseball.clone();
-    ted.add(baseball);
-    baseball.position.set(0.45,5.25,1.75);
-
-    let t5 = new TimelineMax({ repeat: -1 });
-    t5.add(TweenLite.to(ted.rotation, 1, { y: "+="+Math.PI * -2 }));
-    t5.add(TweenLite.to(ted.position, 0.5, { x: "-=5", ease: Power2.easeIn }));
-    t5.add(TweenLite.to(ted.position, 0.5, { y: 5, ease: Power2.easeOut }));
-    t5.add(TweenLite.to(ted.position, 0.5, { y: 0, ease: Power2.easeIn }));
-    t5.add(TweenLite.to(ted.position, 0.5, { z: "+=15", ease: Power2.easeIn }));
-    t5.add(TweenLite.to(ted.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t5.add(TweenLite.to(ted.position, 0.5, { z: "-=15", ease: Power2.easeIn }));
-    t5.add(TweenLite.to(ted.position, 0.5, { x: "+=2.5", ease: Power2.easeIn }));
-    
-
-
-    let terry = modelsArr.duck.clone();
-    terry.position.x -= 5;
-    terry.position.z -= 15;
-    scene.add(terry);
-
-    let football = modelsArr.football.clone();
-    terry.add(football);
-    football.position.set(0,4.75,1.5);
-
-    let t6 = new TimelineMax({ repeat: -1 });
-    t6.add(TweenLite.to(terry.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t6.add(TweenLite.to(terry.position, 0.5, { x: "-=2.5", ease: Power2.easeIn }));
-    t6.add(TweenLite.to(terry.position, 0.5, { y: 5, ease: Power2.easeOut }));
-    t6.add(TweenLite.to(terry.position, 0.5, { y: 0, ease: Power2.easeIn }));
-    t6.add(TweenLite.to(terry.position, 0.5, { z: "+=15", ease: Power2.easeIn }));
-    t6.add(TweenLite.to(terry.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t6.add(TweenLite.to(terry.position, 0.5, { z: "-=15", ease: Power2.easeIn }));
-    t6.add(TweenLite.to(terry.position, 0.5, { x: "+=2.5", ease: Power2.easeIn }));
-
-
-
-    let tom = modelsArr.duck.clone();
-    tom.position.x += 5;
-    tom.position.z -= 15;
-    scene.add(tom);
-
-    let mortar = modelsArr.mortar.clone();
-    tom.add(mortar);
-    mortar.position.set(0,5.35,1.25);
-
-    let t7 = new TimelineMax({ repeat: -1 });
-    t7.add(TweenLite.to(tom.rotation, 1, { y: "+="+Math.PI * -2 }));
-    t7.add(TweenLite.to(tom.position, 0.5, { x: "-=2.5", ease: Power2.easeIn }));
-    t7.add(TweenLite.to(tom.position, 0.5, { y: 5, ease: Power2.easeOut }));
-    t7.add(TweenLite.to(tom.position, 0.5, { y: 0, ease: Power2.easeIn }));
-    t7.add(TweenLite.to(tom.position, 0.5, { z: "+=15", ease: Power2.easeIn }));
-    t7.add(TweenLite.to(tom.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t7.add(TweenLite.to(tom.position, 0.5, { z: "-=15", ease: Power2.easeIn }));
-    t7.add(TweenLite.to(tom.position, 0.5, { x: "+=2.5", ease: Power2.easeIn }));
-
-
-
-
-
-    let taz = modelsArr.duck.clone();
-    taz.position.x += 15;    
-    taz.position.z -= 15;
-    scene.add(taz);
-    
-    let shades = modelsArr.shades.clone();
-    taz.add(shades);
-    shades.position.set(0,5.1,2.0);
-
-    let t8 = new TimelineMax({ repeat: -1 });
-    t8.add(TweenLite.to(taz.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t8.add(TweenLite.to(taz.position, 0.5, { x: "-=2.5", ease: Power2.easeIn }));
-    t8.add(TweenLite.to(taz.position, 0.5, { y: 5, ease: Power2.easeOut }));
-    t8.add(TweenLite.to(taz.position, 0.5, { y: 0, ease: Power2.easeIn }));
-    t8.add(TweenLite.to(taz.position, 0.5, { z: "+=15", ease: Power2.easeIn }));
-    t8.add(TweenLite.to(taz.rotation, 1, { y: "+="+Math.PI * 2 }));
-    t8.add(TweenLite.to(taz.position, 0.5, { z: "-=15", ease: Power2.easeIn }));
-    t8.add(TweenLite.to(taz.position, 0.5, { x: "+=2.5", ease: Power2.easeIn }));
-
+    let taz = initDuck(modelsArr.shades, 15, -15, { x:0., y:5.1, z:2.0 });
+                dance(taz, -1, 1);
 
 });
