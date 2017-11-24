@@ -22,6 +22,30 @@ import { MeshPhongMaterial } from '../node_modules/three/src/materials/MeshPhong
 
 import polyLoader from './lib/polyLoader';
 
+let player;
+let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/player_api";
+let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+function onYouTubePlayerAPIReady() {
+    player = new YT.Player('ytplayer', {
+        height: '240',
+        width: '360',
+        videoId: 'oQwNN-0AgWc',
+        events: {
+            'onReady': onPlayerReady,
+        }
+    });
+}
+
+function onPlayerReady(e){
+    animate();
+    player.playVideo();
+}
+
+window.onYouTubePlayerAPIReady = onYouTubePlayerAPIReady;
+
 let pl = new polyLoader;
 let bill, scene, camera, renderer, modelsArr;
 let spots = [];
@@ -67,7 +91,6 @@ function init() {
     scene.add(light.target);
     light.motion = { x: -1, y: 1 }
     spots.push(light);
-
 
     var light = new SpotLight( 0x4444ff, 0.75, 0, Math.PI/16, 0.05 );
     light.position.set( 50, 100, 50 );
@@ -195,7 +218,6 @@ pl.load(models, progress).then((result) => {
     result.map((r) => { modelsArr[r.id] = r.object; });
 
     init();
-    animate();
 
     let barry = initDuck(modelsArr.top, -15, 0, { x:0, y:6.1, z:1.25 });
                 dance(barry, 1, -1);

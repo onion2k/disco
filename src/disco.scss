@@ -16,34 +16,42 @@ div {
     border: 1px solid #ffffff;
 }
 
+#ytplayer {
+    position: absolute;
+    width: 360px;
+    height: 240px;
+    bottom: 0;
+    left: 0;
+    background-color: #222222;
+}
+
 #progress {
     width: 40px;
     height: 40px;
     background-color: #ffffff;
-  
     margin: 100px auto;
     -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
     animation: sk-rotateplane 1.2s infinite ease-in-out;
 }
-  
+
 @-webkit-keyframes sk-rotateplane {
     0% { -webkit-transform: perspective(120px) }
     50% { -webkit-transform: perspective(120px) rotateY(180deg) }
     100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
 }
-  
+
 @keyframes sk-rotateplane {
     0% { 
-      transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-      -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg); 
-      background-color: #ffffff;
+        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg); 
+        background-color: #ffffff;
     } 50% { 
-      transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-      -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-      background-color: #00ff00;
+        transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+        background-color: #00ff00;
     } 100% { 
-      transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-      -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-      background-color: #ffffff;
+        transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+        -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+        background-color: #ffffff;
     }
 }

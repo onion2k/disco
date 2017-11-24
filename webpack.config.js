@@ -56,7 +56,12 @@ const config = {
         new CopyWebpackPlugin([
             { from: 'assets' }
         ]),
-        new UglifyJSPlugin(),
+        // new UglifyJSPlugin({
+        //     mangle: {
+        //         except: ['onYouTubePlayerAPIReady'],
+        //         keep_fnames: true
+        //     }
+        // }),
         new HtmlWebpackPlugin({ template: 'assets/index.html' }),
         //new ExtractTextPlugin("disco.css"),
         extractSass
