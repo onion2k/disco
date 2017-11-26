@@ -22,8 +22,6 @@ import { MeshPhongMaterial } from '../node_modules/three/src/materials/MeshPhong
 
 import polyLoader from './lib/polyLoader';
 
-// window.onYouTubePlayerAPIReady = onYouTubePlayerAPIReady;
-
 let pl = new polyLoader;
 let bill, scene, camera, renderer, modelsArr;
 let spots = [];
@@ -132,6 +130,11 @@ function init() {
     document.body.appendChild( container );
     container.appendChild( renderer.domElement );
 
+    let audio = document.getElementById( 'audio' );
+    audio.play();
+
+    animate();
+
 }
 
 function animate() {
@@ -195,31 +198,31 @@ pl.load(models, progress).then((result) => {
     modelsArr = {};
     result.map((r) => { modelsArr[r.id] = r.object; });
 
-    // init();
+    init();
 
-    // let barry = initDuck(modelsArr.top, -15, 0, { x:0, y:6.1, z:1.25 });
-    //             dance(barry, 1, -1);
+    let barry = initDuck(modelsArr.top, -15, 0, { x:0, y:6.1, z:1.25 });
+                dance(barry, 1, -1);
 
-    // let bill = initDuck(modelsArr.wizard, -5, 0, { x:0, y:4.45, z:1.25 });
-    //             dance(bill, -1, -1);
+    let bill = initDuck(modelsArr.wizard, -5, 0, { x:0, y:4.45, z:1.25 });
+                dance(bill, -1, -1);
 
-    // let bob = initDuck(modelsArr.pirate, 5, 0, { x:0, y:4.9, z:1.25 });
-    //             dance(bob, 1, -1);
+    let bob = initDuck(modelsArr.pirate, 5, 0, { x:0, y:4.9, z:1.25 });
+                dance(bob, 1, -1);
 
-    // let benny = initDuck(modelsArr.sheriff, 15, 0, { x:0, y:5.2, z:1.25 });
-    //             dance(benny, -1, -1);
+    let benny = initDuck(modelsArr.sheriff, 15, 0, { x:0, y:5.2, z:1.25 });
+                dance(benny, -1, -1);
 
 
-    // let ted = initDuck(modelsArr.baseball, -15, -15, { x:0.45, y:5.25, z:1.75 });
-    //             dance(ted, 1, 1);
+    let ted = initDuck(modelsArr.baseball, -15, -15, { x:0.45, y:5.25, z:1.75 });
+                dance(ted, 1, 1);
 
-    // let terry = initDuck(modelsArr.football, -5, -15, { x:0, y:4.75, z:1.5 });
-    //             dance(terry, -1, 1);
+    let terry = initDuck(modelsArr.football, -5, -15, { x:0, y:4.75, z:1.5 });
+                dance(terry, -1, 1);
 
-    // let tom = initDuck(modelsArr.mortar, 5, -15, { x:0, y:5.35, z:1.25 });
-    //             dance(tom, 1, 1);
+    let tom = initDuck(modelsArr.mortar, 5, -15, { x:0, y:5.35, z:1.25 });
+                dance(tom, 1, 1);
 
-    // let taz = initDuck(modelsArr.shades, 15, -15, { x:0., y:5.1, z:2.0 });
-    //             dance(taz, -1, 1);
+    let taz = initDuck(modelsArr.shades, 15, -15, { x:0., y:5.1, z:2.0 });
+                dance(taz, -1, 1);
 
 });
